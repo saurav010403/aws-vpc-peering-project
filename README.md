@@ -1,6 +1,6 @@
 # AWS VPC Peering: Private Connectivity Between Two VPCs
 
-**Student:** Saurav Mani Tripathi | **Batch:** `<your batch>` | **Region:** ap-southeast-2 (Sydney) | **Course:** EWB Courses, AWS Architect Associate, Project 01
+**Student:** Saurav Mani Tripathi | **Batch:** "AWS INTERNSHIP BATCH 1 " | **Region:** ap-southeast-2 (Sydney) | **Course:** EWB Courses, AWS Architect Associate, Project 01
 **Repo:** https://github.com/saurav010403/aws-vpc-peering-project
 
 Two private VPCs connected with a VPC peering connection. Both app servers have no public IP. Administration goes through one public bastion host. Built in the AWS Console; SSH tests were run from AWS CloudShell using ProxyJump through the bastion.
@@ -63,9 +63,8 @@ See `docs/architecture.md` for the final route tables and security group rules.
 - SSH timed out from CloudShell because its public IP differed from the IP allowed in ewb-sg-bastion. Fixed by allowing the current CloudShell IP /32.
 
 ## What I learned
-`<write 3-5 lines in your own words>`
+Peering alone does not carry traffic: both VPCs need routes to each other, and the destination security group must also allow the traffic. I saw this by getting a 100% packet loss before the routes, 0% after them, and a failure again when I removed the ICMP rule. Route tables need the CIDR of the other VPC as destination; using a VPC’s own CIDR gave an error. I also learned to use Add route instead of editing existing rows, because that removed my internet route once. Keeping app servers private and reaching them through a bastion with ProxyJump is safer, and /32 security group sources keep access minimal
 
 ## Cleanup
 All `ewb-*` resources were deleted: instances terminated, peering and routes removed, security groups, route tables, subnets, internet gateway and both VPCs deleted. See `evidence/screenshots/25-cleanup-instances-terminated.png` and the final cleanup screenshot.
 
-> Never commit `.pem` keys. `.gitignore` already blocks them.
